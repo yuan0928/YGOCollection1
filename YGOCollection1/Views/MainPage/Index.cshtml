@@ -1,0 +1,37 @@
+﻿@model YGOCollection1.ViewModels.MainPageViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = "MainPage";
+}
+<br>
+<div class="container">
+    <h2>各期補充包</h2>
+    <ul class="nav nav-pills nav-justified">
+        @foreach (var item3 in Model.MainPageAlls)
+        {
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#">@Html.DisplayFor(modelitem => item3.GroupNames)</a>
+            </li>
+        }
+    </ul>
+    
+    @foreach (var item in Model.MainPageAlls)
+    {
+        <div class="card">
+            <div class="card-header">@Html.DisplayFor(modelitem => item.GroupNames)</div>
+            <div class="card-body">
+                @foreach (var item2 in item.MainPages)
+                {
+                    <a href="@Url.Action("Index","YGOPack2",new { cardnumberID = item2.ID })" class="btn btn-primary btn-lg">@Html.DisplayFor(modelitem => item2.Code)</a>
+                }
+
+            </div>
+
+
+        </div>
+    }
+
+</div>
+

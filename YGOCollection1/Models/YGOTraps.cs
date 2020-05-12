@@ -22,6 +22,7 @@ namespace YGOCollection1.Models
         public Nullable<System.DateTime> create_at { get; set; }
         public Nullable<System.DateTime> update_at { get; set; }
         public string CardNumber { get; set; }
+        public Nullable<bool> cardenable { get; set; }
     
         public virtual refCardList refCardList { get; set; }
         public virtual TypeTrapCard TypeTrapCard { get; set; }

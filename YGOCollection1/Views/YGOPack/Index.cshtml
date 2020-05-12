@@ -8,21 +8,33 @@
 <h2>Index</h2>
 
 <p>
-@Html.DisplayFor(model => model.)
+    
 </p>
 <table class="table">
     <tr>
+        <th>名稱</th>
+        <th>編號</th>
+        <th>密碼</th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelitem => item.CardName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelitem => item.CardNumber)
+    </td>
+    <td>
+        @Html.DisplayFor(modelitem => item.CardPassword)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+    </td>
+</tr>
 }
 
 </table>

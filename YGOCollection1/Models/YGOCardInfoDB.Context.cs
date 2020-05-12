@@ -30,13 +30,12 @@ namespace YGOCollection1.Models
         public virtual DbSet<refCardList> refCardList { get; set; }
         public virtual DbSet<refCardType> refCardType { get; set; }
         public virtual DbSet<refMonsterType> refMonsterType { get; set; }
+        public virtual DbSet<refpackgroup> refpackgroup { get; set; }
         public virtual DbSet<TypeMonsterCard> TypeMonsterCard { get; set; }
         public virtual DbSet<TypeSpellCard> TypeSpellCard { get; set; }
         public virtual DbSet<TypeTrapCard> TypeTrapCard { get; set; }
         public virtual DbSet<YGOMonsters> YGOMonsters { get; set; }
         public virtual DbSet<YGOSpells> YGOSpells { get; set; }
         public virtual DbSet<YGOTraps> YGOTraps { get; set; }
-
-        public System.Data.Entity.DbSet<YGOCollection1.ViewModels.YGOPackViewModel> YGOPackViewModels { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="YGOCardInfoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="YGOCardInfoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Information">
           <Key>
             <PropertyRef Name="ID" />
@@ -34,6 +34,7 @@
           <Property Name="piece" Type="smallint" />
           <Property Name="create_at" Type="smalldatetime" />
           <Property Name="update_at" Type="smalldatetime" />
+          <Property Name="packgroup" Type="smallint" Nullable="false" />
         </EntityType>
         <EntityType Name="refCardType">
           <Key>
@@ -53,6 +54,14 @@
           <Property Name="Attribute" Type="nvarchar" MaxLength="10" />
           <Property Name="create_at" Type="smalldatetime" />
           <Property Name="update_at" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="refpackgroup">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="smallint" Nullable="false" />
+          <Property Name="groupname" Type="nvarchar" MaxLength="5" />
+          <Property Name="create_at" Type="datetime" />
         </EntityType>
         <EntityType Name="TypeMonsterCard">
           <Key>
@@ -110,6 +119,7 @@
           <Property Name="create_at" Type="smalldatetime" />
           <Property Name="update_at" Type="smalldatetime" />
           <Property Name="CardNumber" Type="varchar" MaxLength="10" />
+          <Property Name="cardenable" Type="bit" />
         </EntityType>
         <EntityType Name="YGOTraps">
           <Key>
@@ -123,7 +133,20 @@
           <Property Name="create_at" Type="smalldatetime" />
           <Property Name="update_at" Type="smalldatetime" />
           <Property Name="CardNumber" Type="varchar" MaxLength="10" />
+          <Property Name="cardenable" Type="bit" />
         </EntityType>
+        <Association Name="fk_refCardList_refpackgroup_packgroup">
+          <End Role="refpackgroup" Type="Self.refpackgroup" Multiplicity="1" />
+          <End Role="refCardList" Type="Self.refCardList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="refpackgroup">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="refCardList">
+              <PropertyRef Name="packgroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_YGOMonster_refAttribute_CardAttributeID">
           <End Role="refAttribute" Type="Self.refAttribute" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -236,12 +259,17 @@
           <EntitySet Name="refCardList" EntityType="Self.refCardList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="refCardType" EntityType="Self.refCardType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="refMonsterType" EntityType="Self.refMonsterType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="refpackgroup" EntityType="Self.refpackgroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypeMonsterCard" EntityType="Self.TypeMonsterCard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypeSpellCard" EntityType="Self.TypeSpellCard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypeTrapCard" EntityType="Self.TypeTrapCard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YGOMonsters" EntityType="Self.YGOMonsters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YGOSpells" EntityType="Self.YGOSpells" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YGOTraps" EntityType="Self.YGOTraps" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_refCardList_refpackgroup_packgroup" Association="Self.fk_refCardList_refpackgroup_packgroup">
+            <End Role="refpackgroup" EntitySet="refpackgroup" />
+            <End Role="refCardList" EntitySet="refCardList" />
+          </AssociationSet>
           <AssociationSet Name="fk_YGOMonster_refAttribute_CardAttributeID" Association="Self.fk_YGOMonster_refAttribute_CardAttributeID">
             <End Role="refAttribute" EntitySet="refAttribute" />
             <End Role="YGOMonsters" EntitySet="YGOMonsters" />
@@ -275,7 +303,8 @@
             <End Role="YGOTraps" EntitySet="YGOTraps" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="YGOCardInfoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -309,6 +338,8 @@
           <Property Name="piece" Type="Int16" />
           <Property Name="create_at" Type="DateTime" Precision="0" />
           <Property Name="update_at" Type="DateTime" Precision="0" />
+          <Property Name="packgroup" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="refpackgroup" Relationship="Self.fk_refCardList_refpackgroup_packgroup" FromRole="refCardList" ToRole="refpackgroup" />
           <NavigationProperty Name="YGOMonsters" Relationship="Self.fk_YGOMonster_refCardList_CardNumberID" FromRole="refCardList" ToRole="YGOMonsters" />
           <NavigationProperty Name="YGOSpells" Relationship="Self.fk_YGOSpells_refCardList_CardNumberID" FromRole="refCardList" ToRole="YGOSpells" />
           <NavigationProperty Name="YGOTraps" Relationship="Self.fk_YGOTraps_refCardList_CardNumberID" FromRole="refCardList" ToRole="YGOTraps" />
@@ -332,6 +363,15 @@
           <Property Name="create_at" Type="DateTime" Precision="0" />
           <Property Name="update_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="YGOMonsters" Relationship="Self.fk_YGOMonster_refMonsterType_Type_MonsterTypeID" FromRole="refMonsterType" ToRole="YGOMonsters" />
+        </EntityType>
+        <EntityType Name="refpackgroup">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int16" Nullable="false" />
+          <Property Name="groupname" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="create_at" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="refCardList" Relationship="Self.fk_refCardList_refpackgroup_packgroup" FromRole="refpackgroup" ToRole="refCardList" />
         </EntityType>
         <EntityType Name="TypeMonsterCard">
           <Key>
@@ -378,11 +418,11 @@
           <Property Name="create_at" Type="DateTime" Precision="0" />
           <Property Name="update_at" Type="DateTime" Precision="0" />
           <Property Name="CardNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cardenable" Type="Boolean" />
           <NavigationProperty Name="refAttribute" Relationship="Self.fk_YGOMonster_refAttribute_CardAttributeID" FromRole="YGOMonsters" ToRole="refAttribute" />
           <NavigationProperty Name="refCardList" Relationship="Self.fk_YGOMonster_refCardList_CardNumberID" FromRole="YGOMonsters" ToRole="refCardList" />
           <NavigationProperty Name="refMonsterType" Relationship="Self.fk_YGOMonster_refMonsterType_Type_MonsterTypeID" FromRole="YGOMonsters" ToRole="refMonsterType" />
           <NavigationProperty Name="TypeMonsterCard" Relationship="Self.fk_YGOMonster_TypeMonsterCard_CardTypeID" FromRole="YGOMonsters" ToRole="TypeMonsterCard" />
-          <Property Name="cardenable" Type="Boolean" />
         </EntityType>
         <EntityType Name="YGOSpells">
           <Key>
@@ -396,6 +436,7 @@
           <Property Name="create_at" Type="DateTime" Precision="0" />
           <Property Name="update_at" Type="DateTime" Precision="0" />
           <Property Name="CardNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cardenable" Type="Boolean" />
           <NavigationProperty Name="refCardList" Relationship="Self.fk_YGOSpells_refCardList_CardNumberID" FromRole="YGOSpells" ToRole="refCardList" />
           <NavigationProperty Name="TypeSpellCard" Relationship="Self.fk_YGOSpells_TypeSpellCard_CardTypeID" FromRole="YGOSpells" ToRole="TypeSpellCard" />
         </EntityType>
@@ -411,6 +452,7 @@
           <Property Name="create_at" Type="DateTime" Precision="0" />
           <Property Name="update_at" Type="DateTime" Precision="0" />
           <Property Name="CardNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cardenable" Type="Boolean" />
           <NavigationProperty Name="refCardList" Relationship="Self.fk_YGOTraps_refCardList_CardNumberID" FromRole="YGOTraps" ToRole="refCardList" />
           <NavigationProperty Name="TypeTrapCard" Relationship="Self.fk_YGOTraps_TypeTrapCard_CardTypeID" FromRole="YGOTraps" ToRole="TypeTrapCard" />
         </EntityType>
@@ -425,6 +467,18 @@
             </Principal>
             <Dependent Role="YGOMonsters">
               <PropertyRef Name="CardAttributeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_refCardList_refpackgroup_packgroup">
+          <End Role="refpackgroup" Type="Self.refpackgroup" Multiplicity="1" />
+          <End Role="refCardList" Type="Self.refCardList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="refpackgroup">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="refCardList">
+              <PropertyRef Name="packgroup" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -526,6 +580,7 @@
           <EntitySet Name="refCardList" EntityType="Self.refCardList" />
           <EntitySet Name="refCardType" EntityType="Self.refCardType" />
           <EntitySet Name="refMonsterType" EntityType="Self.refMonsterType" />
+          <EntitySet Name="refpackgroup" EntityType="Self.refpackgroup" />
           <EntitySet Name="TypeMonsterCard" EntityType="Self.TypeMonsterCard" />
           <EntitySet Name="TypeSpellCard" EntityType="Self.TypeSpellCard" />
           <EntitySet Name="TypeTrapCard" EntityType="Self.TypeTrapCard" />
@@ -535,6 +590,10 @@
           <AssociationSet Name="fk_YGOMonster_refAttribute_CardAttributeID" Association="Self.fk_YGOMonster_refAttribute_CardAttributeID">
             <End Role="refAttribute" EntitySet="refAttribute" />
             <End Role="YGOMonsters" EntitySet="YGOMonsters" />
+          </AssociationSet>
+          <AssociationSet Name="fk_refCardList_refpackgroup_packgroup" Association="Self.fk_refCardList_refpackgroup_packgroup">
+            <End Role="refpackgroup" EntitySet="refpackgroup" />
+            <End Role="refCardList" EntitySet="refCardList" />
           </AssociationSet>
           <AssociationSet Name="fk_YGOMonster_refCardList_CardNumberID" Association="Self.fk_YGOMonster_refCardList_CardNumberID">
             <End Role="refCardList" EntitySet="refCardList" />
@@ -601,6 +660,7 @@
                 <ScalarProperty Name="piece" ColumnName="piece" />
                 <ScalarProperty Name="create_at" ColumnName="create_at" />
                 <ScalarProperty Name="update_at" ColumnName="update_at" />
+                <ScalarProperty Name="packgroup" ColumnName="packgroup" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -622,6 +682,15 @@
                 <ScalarProperty Name="Attribute" ColumnName="Attribute" />
                 <ScalarProperty Name="create_at" ColumnName="create_at" />
                 <ScalarProperty Name="update_at" ColumnName="update_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="refpackgroup">
+            <EntityTypeMapping TypeName="YGOCardInfoModel.refpackgroup">
+              <MappingFragment StoreEntitySet="refpackgroup">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="groupname" ColumnName="groupname" />
+                <ScalarProperty Name="create_at" ColumnName="create_at" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -655,7 +724,6 @@
           <EntitySetMapping Name="YGOMonsters">
             <EntityTypeMapping TypeName="YGOCardInfoModel.YGOMonsters">
               <MappingFragment StoreEntitySet="YGOMonsters">
-                <ScalarProperty Name="cardenable" ColumnName="cardenable" />
                 <ScalarProperty Name="CardID" ColumnName="CardID" />
                 <ScalarProperty Name="CardName" ColumnName="CardName" />
                 <ScalarProperty Name="CardAttributeID" ColumnName="CardAttributeID" />
@@ -670,6 +738,7 @@
                 <ScalarProperty Name="create_at" ColumnName="create_at" />
                 <ScalarProperty Name="update_at" ColumnName="update_at" />
                 <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="cardenable" ColumnName="cardenable" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -684,6 +753,7 @@
                 <ScalarProperty Name="create_at" ColumnName="create_at" />
                 <ScalarProperty Name="update_at" ColumnName="update_at" />
                 <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="cardenable" ColumnName="cardenable" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -698,6 +768,7 @@
                 <ScalarProperty Name="create_at" ColumnName="create_at" />
                 <ScalarProperty Name="update_at" ColumnName="update_at" />
                 <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="cardenable" ColumnName="cardenable" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

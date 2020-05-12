@@ -1,4 +1,5 @@
-﻿@{
+﻿@model YGOCollection1.ViewModels.MainPageViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @{
@@ -7,20 +8,25 @@
 <br>
 <div class="container">
     <h2>各期補充包</h2>
+
+@foreach (var item in Model.GroupNames)
+{
     <div class="card">
-        <div class="card-header">第三期</div>
+        <div class="card-header">@Html.DisplayFor(modelitem => item.Groupname)</div>
+
         <div class="card-body">
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =1})" class="btn btn-primary btn-lg">301</a>
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =2})" class="btn btn-primary btn-lg">302</a>
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =3})" class="btn btn-primary btn-lg">303</a>
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =4})" class="btn btn-primary btn-lg">304</a>
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =5})" class="btn btn-primary btn-lg">305</a>
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =6})" class="btn btn-primary btn-lg">306</a>
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =7})" class="btn btn-primary btn-lg">307</a>
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =8})" class="btn btn-primary btn-lg">308</a>
-            <a href="@Url.Action("Index", "YGOPack" ,new { cardnumberID =9})" class="btn btn-primary btn-lg">309</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 1 })" class="btn btn-primary btn-lg">301</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 2 })" class="btn btn-primary btn-lg">302</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 3 })" class="btn btn-primary btn-lg">303</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 4 })" class="btn btn-primary btn-lg">304</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 5 })" class="btn btn-primary btn-lg">305</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 6 })" class="btn btn-primary btn-lg">306</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 7 })" class="btn btn-primary btn-lg">307</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 8 })" class="btn btn-primary btn-lg">308</a>
+            <a href="@Url.Action("Index", "YGOPack2", new { cardnumberID = 9 })" class="btn btn-primary btn-lg">309</a>
         </div>
     </div>
+}
 </div>
 
 

@@ -1,0 +1,77 @@
+﻿@model YGOCollection1.ViewModels.YGOPack2ViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-title">@Html.DisplayFor(model => model.YGOPackLists.packname)</div>
+        <div class="card-text">共 @Html.DisplayFor(model => model.YGOPackLists.piece) 枚</div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">主要怪獸</div>
+    <div class="card-body">
+        <div class="row">
+        @foreach (var item in Model.YGOMonsterLists)
+        {
+            var imgpath = "/Images/" + @Html.DisplayFor(model => model.YGOPackLists.code) + "/" + @Html.DisplayFor(model => model.YGOPackLists.code) + "-" + @Html.DisplayFor(modelitem => item.CardNumber) + ".jpg";
+            <div class="col-md-2">
+                <div class="card" style="width:150px">
+                    <div class="card-title">@Html.DisplayFor(modelitem => item.CardNumber)</div>
+                    <a href="@Url.Action("Details", "YGOCardInfo" ,new { password =item.CardPassword  })">
+                        <img class="card-img-top" src="@imgpath" alt="Card image">
+                    </a>
+                    <div class="card-body">
+                        <div class="card-text">@Html.DisplayFor(modelitem => item.CardName)</div>
+                    </div>
+                </div>
+            </div>
+         }
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">魔法卡</div>
+    <div class="card-body">
+        <div class="card-deck">
+            @foreach (var item in Model.YGOSpellLists)
+            {
+                var imgpath = "/Images/" + @Html.DisplayFor(model => model.YGOPackLists.code) + "/" + @Html.DisplayFor(model => model.YGOPackLists.code) + "-" + @Html.DisplayFor(modelitem => item.CardNumber) + ".jpg";
+                <div class="card" style="width:150px">
+                    <div class="card-title">@Html.DisplayFor(modelitem => item.CardNumber)</div>
+                    <img class="card-img-top" src="@imgpath" alt="Card image">
+                    <div class="card-body">
+                        <div class="card-text">@Html.DisplayFor(modelitem => item.CardName)</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">陷阱卡</div>
+    <div class="card-body">
+        <div class="card-deck">
+            @foreach (var item in Model.YGOTrapLists)
+            {
+                var imgpath = "/Images/" + @Html.DisplayFor(model => model.YGOPackLists.code) + "/" + @Html.DisplayFor(model => model.YGOPackLists.code) + "-" + @Html.DisplayFor(modelitem => item.CardNumber) + ".jpg";
+                <div class="card" style="width:150px">
+                    <div class="card-title">@Html.DisplayFor(modelitem => item.CardNumber)</div>
+                    <img class="card-img-top" src="@imgpath" alt="Card image">
+                    <div class="card-body">
+                        <div class="card-text">@Html.DisplayFor(modelitem => item.CardName)</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

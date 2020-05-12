@@ -1,0 +1,28 @@
+﻿@model IEnumerable<YGOCollection1.ViewModels.forindex3_2_3>
+
+@{
+    ViewBag.Title = "Index3_2_3";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br>
+<div class="container">
+    <h2>各期補充包</h2>
+
+    @foreach (var item2 in Model)
+    {
+        <div class="card">
+            <div class="card-header">@Html.DisplayFor(modelitem => item2.Groupnames)</div>
+
+            <div class="card-body">
+                @foreach (var item in item2.)
+                {
+                    <a href="@Url.Action("Index", "YGOPack2",new { cardnumberID = item2.PerId})" class="btn btn-primary btn-lg">@Html.DisplayFor(modelitem => item)</a>
+
+
+                }
+
+            </div>
+        </div>
+    }
+</div>

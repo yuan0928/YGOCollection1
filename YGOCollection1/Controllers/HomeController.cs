@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using YGOCollection1.Models;
+using YGOCollection1.ViewModels;
 
 namespace YGOCollection.Controllers
 {
@@ -16,6 +17,7 @@ namespace YGOCollection.Controllers
         }
         public ActionResult MainPage()
         {
+           
             return View();
         }
         public ActionResult AddCard()

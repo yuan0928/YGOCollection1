@@ -12,19 +12,19 @@ namespace YGOCollection1.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class YGOSpells
+    public partial class refpackgroup
     {
-        public short CardID { get; set; }
-        public string CardName { get; set; }
-        public Nullable<short> CardTypeID { get; set; }
-        public Nullable<short> CardNumberID { get; set; }
-        public string CardPassword { get; set; }
-        public Nullable<System.DateTime> create_at { get; set; }
-        public Nullable<System.DateTime> update_at { get; set; }
-        public string CardNumber { get; set; }
-        public Nullable<bool> cardenable { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public refpackgroup()
+        {
+            this.refCardList = new HashSet<refCardList>();
+        }
     
-        public virtual refCardList refCardList { get; set; }
-        public virtual TypeSpellCard TypeSpellCard { get; set; }
+        public short ID { get; set; }
+        public string groupname { get; set; }
+        public Nullable<System.DateTime> create_at { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<refCardList> refCardList { get; set; }
     }
 }
